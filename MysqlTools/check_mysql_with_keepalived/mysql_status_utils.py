@@ -71,13 +71,13 @@ def check_network_status(gateway):
         res = output.lower().split(',')
         packet_loss_percentage = (10 - float(res[1].lstrip().split(' ')[0])) / 10
         network_latency = float(res[-1].lstrip().split(' ')[1].replace('ms', '')) / 10
-        if network_latency > 800:
+        if network_latency > mcc.latency:
             localtime = time.asctime(time.localtime(time.time()))
             with open('/data/keepalived/check.log', 'a+') as f:
                 f.write('%s------[CheckScripts][Warning]: Netowork Latency is %sms.\n' % (localtime, network_latency))
                 f.close()
             return 0
-        elif packet_loss_percentage > 0.5:
+        elif packet_loss_percentage > mcc.loss_percentage:
             localtime = time.asctime(time.localtime(time.time()))
             with open('/data/keepalived/check.log', 'a+') as f:
                 f.write(
