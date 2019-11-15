@@ -82,7 +82,7 @@ def check_network_status(gateway):
             with open('/data/keepalived/check.log', 'a+') as f:
                 f.write(
                     '%s------[CheckScripts][Warning]: Netowork packet loss percentage is over 50%%.Now is %s%%.\n' % (
-                        localtime, packet_loss_percentage * 10))
+                        localtime, packet_loss_percentage * 100))
                 f.close()
             return 0
         else:
