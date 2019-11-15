@@ -5,8 +5,8 @@
 
 import time
 from subprocess import call, DEVNULL, getoutput, getstatusoutput
-from MysqlTools.chek_mysql_with_keepalived import message_sender
-from MysqlTools.chek_mysql_with_keepalived import mysql_check_config as mcc
+from MysqlTools.check_mysql_with_keepalived import message_sender
+from MysqlTools.check_mysql_with_keepalived import mysql_check_config as mcc
 
 
 def check_mysql_status():

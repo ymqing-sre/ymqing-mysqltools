@@ -8,7 +8,7 @@ from urllib import request
 import os
 import base64
 import time
-from MysqlTools.chek_mysql_with_keepalived import mysql_check_config as msc
+from MysqlTools.check_mysql_with_keepalived import mysql_check_config as msc
 
 corpid = 'ww42e8e4f8486bda5a'
 corpsecret = 'vYYWbHKiVobwArFoGf7w707JHp12aV5RdgwqwZL6yz0'

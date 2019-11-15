@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # @Author:Ymq
 
-from MysqlTools.chek_mysql_with_keepalived import mysql_status_utils as msu
-from MysqlTools.chek_mysql_with_keepalived import mysql_check_config as mcc
+from MysqlTools.check_mysql_with_keepalived import mysql_status_utils as msu
+from MysqlTools.check_mysql_with_keepalived import mysql_check_config as mcc
 import time
 
 
