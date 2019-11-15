@@ -4,6 +4,7 @@
 # @Author:Ymq
 
 import time
+import socket
 from subprocess import call, DEVNULL, getoutput, getstatusoutput
 from MysqlTools.check_mysql_with_keepalived import message_sender
 from MysqlTools.check_mysql_with_keepalived import mysql_check_config as mcc
@@ -134,6 +135,8 @@ def switch_to_backup():
     失败 0
     """
     localtime = time.asctime(time.localtime(time.time()))
+    hostname = socket.getfqdn(socket.gethostname())
+    ip_addr = socket.gethostbyname(hostname)
     # 记录主备切换操作
     with open('/data/keepalived/check.log', 'a+') as f:
         f.write(
@@ -167,7 +170,7 @@ def switch_to_backup():
                     f.write(
                         '%s------[CheckScripts][Error]Network restart failed.Please contact the administrator.\n' % localtime)
                     f.close()
-                content = '【天虎云商】Mysql主从切换失败，请尽快查看。检查时间：%s' % localtime
+                content = '【天虎云商】%s:Keepalived进程关闭失败，请尽快查看。检查时间：%s' % (ip_addr, localtime)
                 m = message_sender.WorkChatSenders(content)
                 m.work_chat_message()
                 return 0
@@ -176,7 +179,7 @@ def switch_to_backup():
                 f.write(
                     '%s------[CheckScripts][Info]Switch succeed.\n' % localtime)
                 f.close()
-            content = '【天虎云商】Mysql主从切换成功，请知晓。检查时间：%s' % localtime
+            content = '【天虎云商】%s:Keepalived进程关闭，请尽快查看。检查时间：%s' % (ip_addr, localtime)
             m = message_sender.WorkChatSenders(content)
             m.work_chat_message()
             return 1
@@ -186,7 +189,7 @@ def switch_to_backup():
             f.write(
                 '%s------[CheckScripts][Error]Keepalived killed failed.Reason:%s.\n' % (localtime, res1[1]))
             f.close()
-        content = '【天虎云商】Mysql主从切换失败，请尽快查看。检查时间：%s' % localtime
+        content = '【天虎云商】%s:Keepalived进程关闭失败，请尽快查看。检查时间：%s' % (ip_addr, localtime)
         m = message_sender.WorkChatSenders(content)
         m.work_chat_message()
         return 0
