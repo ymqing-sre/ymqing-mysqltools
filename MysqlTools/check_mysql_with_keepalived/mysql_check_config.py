@@ -25,6 +25,10 @@ is_mysql_response = 1
 is_network_status = 1
 # 网关地址
 gateway_ip = '192.168.20.254'
+# 允许的延迟(ms)
+latency = 800
+# 允许的掉包率
+loss_percentage = 0.5
 
 # 是否检查文件系统状态(0:不检查,1:检查)
 is_filesystem_status = 1
