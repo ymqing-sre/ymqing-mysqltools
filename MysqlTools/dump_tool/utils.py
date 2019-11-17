@@ -50,13 +50,13 @@ def mysqldump(q, path):
 
 
 def threads_dump(database_list, path):
-    queueLock.acquire()
+    # queueLock.acquire()
     for db_name in database_list:
         que.put(db_name)
         t = ThreadsDump(que, path)
         t.start()
         threads.append(t)
-    queueLock.release()
+    # queueLock.release()
     for t in threads:
         t.join()
     with open('dump.log', 'a+') as f:
