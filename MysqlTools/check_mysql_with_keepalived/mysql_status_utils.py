@@ -18,7 +18,7 @@ def check_mysql_status():
     存活 1
     错误 0
     """
-    cmd = 'mysqladmin -u root ping'
+    cmd = '%s/bin/mysqladmin -u root ping' % mcc.mysql_base_dir
     res = getoutput(cmd)
     if res == 'mysqld is alive':
         localtime = time.asctime(time.localtime(time.time()))
@@ -40,7 +40,7 @@ def check_mysql_response():
     判断mysql是否可以创建连接并进行查询
     :return:
     """
-    cmd = 'mysql -u root -e "show status;"'
+    cmd = '%s/bin/mysql -u root -e "show status;"' % mcc.mysql_base_dir
     res = call(cmd, shell=True, stdout=DEVNULL)
     if res == 0:
         localtime = time.asctime(time.localtime(time.time()))

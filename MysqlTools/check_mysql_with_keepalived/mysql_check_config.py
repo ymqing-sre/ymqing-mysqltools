@@ -13,6 +13,8 @@ contacts = 'YeMaoQing'
 log_path = '/data/keepalived/check.log'
 # 微信token存储地址
 token_path = '/data/keepalived/scripts/tokencache'
+# mysql执行文件位置
+mysql_base_dir = '/export/home/mysql'
 
 # 检查项开关
 # 是否检查mysql存活状态(0:不检查,1:检查)
