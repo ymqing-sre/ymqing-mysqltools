@@ -22,13 +22,13 @@ def check_mysql_status():
     res = getoutput(cmd)
     if res == 'mysqld is alive':
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Info]: Mysqld is alived.\n' % localtime)
             f.close()
         return 1
     else:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Warning]: Mysqld is not alived.Response:%s.\n' % (localtime, res))
             f.close()
         return 0
@@ -44,13 +44,13 @@ def check_mysql_response():
     res = call(cmd, shell=True, stdout=DEVNULL)
     if res == 0:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Info]: Mysqld response is well.\n' % localtime)
             f.close()
         return 1
     else:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Warning]: Cannot make a new connection.Response:%s.\n' % (localtime, res))
             f.close()
         return 0
@@ -73,13 +73,13 @@ def check_network_status(gateway):
         network_latency = float(res[-1].lstrip().split(' ')[1].replace('ms', '')) / 10
         if network_latency > mcc.latency:
             localtime = time.asctime(time.localtime(time.time()))
-            with open('/data/keepalived/check.log', 'a+') as f:
+            with open('%s' % mcc.log_path, 'a+') as f:
                 f.write('%s------[CheckScripts][Warning]: Netowork Latency is %sms.\n' % (localtime, network_latency))
                 f.close()
             return 0
         elif packet_loss_percentage > mcc.loss_percentage:
             localtime = time.asctime(time.localtime(time.time()))
-            with open('/data/keepalived/check.log', 'a+') as f:
+            with open('%s' % mcc.log_path, 'a+') as f:
                 f.write(
                     '%s------[CheckScripts][Warning]: Netowork packet loss percentage is over 50%%.Now is %s%%.\n' % (
                         localtime, packet_loss_percentage * 100))
@@ -87,13 +87,13 @@ def check_network_status(gateway):
             return 0
         else:
             localtime = time.asctime(time.localtime(time.time()))
-            with open('/data/keepalived/check.log', 'a+') as f:
+            with open('%s' % mcc.log_path, 'a+') as f:
                 f.write('%s------[CheckScripts][Info]: Network is well.\n' % localtime)
                 f.close()
             return 1
     else:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Error]: Cannot get network info.\n' % localtime)
             f.close()
         content = '【天虎云商】Mysql网络检查脚本执行失败，请尽快查看。检查时间：%s.\n' % localtime
@@ -115,13 +115,13 @@ def check_fs_status(filesystem):
     res = output.split('xfs')[1].lstrip().replace('(', '').replace(')', '').split(',')
     if 'ro' in res:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Warning]: Filesystem %s is read only.\n' % (localtime, filesystem))
             f.close()
         return 0
     else:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write('%s------[CheckScripts][Info]: Filesystem:%s is well.\n' % (localtime, filesystem))
             f.close()
         return 1
@@ -138,7 +138,7 @@ def switch_to_backup():
     hostname = socket.getfqdn(socket.gethostname())
     ip_addr = socket.gethostbyname(hostname)
     # 记录主备切换操作
-    with open('/data/keepalived/check.log', 'a+') as f:
+    with open('%s' % mcc.log_path, 'a+') as f:
         f.write(
             '%s------[CheckScripts][Info]Server status is failed.Try to set the server backup status.\n' % localtime)
         f.close()
@@ -152,7 +152,7 @@ def switch_to_backup():
         # 如果没有释放则重启网卡
         if res2 >= 0:
             localtime = time.asctime(time.localtime(time.time()))
-            with open('/data/keepalived/check.log', 'a+') as f:
+            with open('%s' % mcc.log_path, 'a+') as f:
                 f.write(
                     '%s------[CheckScripts][Warning]VIP release failed.Now restart network automatically.\n' % localtime)
                 f.close()
@@ -160,13 +160,13 @@ def switch_to_backup():
             # 判断重启命令是否执行成功
             if res3 == 0:
                 localtime = time.asctime(time.localtime(time.time()))
-                with open('/data/keepalived/check.log', 'a+') as f:
+                with open('%s' % mcc.log_path, 'a+') as f:
                     f.write('%s------[CheckScripts][Info]Network restart succeed.\n' % localtime)
                     f.close()
                 return 1
             else:
                 localtime = time.asctime(time.localtime(time.time()))
-                with open('/data/keepalived/check.log', 'a+') as f:
+                with open('%s' % mcc.log_path, 'a+') as f:
                     f.write(
                         '%s------[CheckScripts][Error]Network restart failed.Please contact the administrator.\n' % localtime)
                     f.close()
@@ -175,7 +175,7 @@ def switch_to_backup():
                 m.work_chat_message()
                 return 0
         else:
-            with open('/data/keepalived/check.log', 'a+') as f:
+            with open('%s' % mcc.log_path, 'a+') as f:
                 f.write(
                     '%s------[CheckScripts][Info]Switch succeed.\n' % localtime)
                 f.close()
@@ -185,7 +185,7 @@ def switch_to_backup():
             return 1
     else:
         localtime = time.asctime(time.localtime(time.time()))
-        with open('/data/keepalived/check.log', 'a+') as f:
+        with open('%s' % mcc.log_path, 'a+') as f:
             f.write(
                 '%s------[CheckScripts][Error]Keepalived killed failed.Reason:%s.\n' % (localtime, res1[1]))
             f.close()
